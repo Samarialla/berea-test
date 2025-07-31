@@ -19,4 +19,8 @@ export class ProductService {
   createProduct(product: IProduct) {
     return this.http.post('https://api.escuelajs.co/api/v1/products/', product);
   }
+
+  deleteProduct(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

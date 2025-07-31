@@ -1,4 +1,4 @@
-//import 'zone.js';
+import 'zone.js';
 /// <reference types="@angular/localize" />
 
 

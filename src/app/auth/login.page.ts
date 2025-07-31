@@ -21,7 +21,7 @@ export class LoginPage {
   success = signal(false);
   form = this.fb.group({
     email: ['john@mail.com', [Validators.required, Validators.email]],
-    password: ['changeme', Validators.required],
+    password: ['changeme', Validators.required], // pass 'changeme' for testing
   });
   disabled = computed(() => this.form?.invalid || this.loading());
 

@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container">
    <h1 class="mb-4">Lista de Productos</h1>
 
    <ng-container *ngIf="products$ | async as products; else loading">
@@ -36,9 +36,6 @@
       </ng-container>
    </ng-container>
 
-   <ng-template #loading>
-      <p>Cargando productos...</p>
-   </ng-template>
 
    <ng-template #noProducts>
       <p>No hay productos disponibles.</p>

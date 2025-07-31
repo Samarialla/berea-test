@@ -12,6 +12,8 @@ import { Category } from '../../services/category';
 import { map, Observable, startWith } from 'rxjs';
 import { ICategory } from '../../interface/ICategory';
 import { imageUrlValidator } from '../../validators/validatorSystem';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DeleteProduct } from '../delete-product/delete-product';
 
 
 @Component({
@@ -27,7 +29,6 @@ export class Product implements OnInit, AfterViewInit {
   @Output() productCreated = new EventEmitter<void>();
   @Output() closeModal = new EventEmitter<boolean>();
   private platformId = inject(PLATFORM_ID);
-
   private fb = inject(FormBuilder);
   private categoryService = inject(Category);
   private productService = inject(ProductService);
@@ -55,6 +56,7 @@ export class Product implements OnInit, AfterViewInit {
       }
     }
   }
+
 
   private _filter(value: string): ICategory[] {
     const filterValue = value.toLowerCase();
@@ -117,7 +119,7 @@ export class Product implements OnInit, AfterViewInit {
       //console.log(cats)
       this.filteredCategories$ = this.categoryControl.valueChanges.pipe(
         startWith(''),
-        map(value => this._filter(value|| ''))
+        map(value => this._filter(value || ''))
       );
     });
   }

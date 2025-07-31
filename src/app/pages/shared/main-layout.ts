@@ -1,5 +1,5 @@
-import { Component, effect, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, inject} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 
@@ -9,12 +9,12 @@ import { AuthService } from '../../services/auth';
   imports: [CommonModule, RouterModule],
   template: `
   <nav class="d-flex justify-content-between align-items-center p-3 border-bottom">
-  <a routerLink="/home" routerLinkActive="active" class="navbar-brand">Prueba técnica</a>
+  <a routerLink="/home" routerLinkActive="active" class="navbar-brand">Prueba técnica</a> 
   <button (click)="logout()" class="btn btn-outline-info btn-sm" title="Cerrar sesión">
     <i style="font-size: 12px;" class="material-icons me-2">logout</i>Cerrar sesión
   </button>
 </nav>
- <main class="container mt-4">
+ <main class="container">
      <router-outlet></router-outlet>
   </main>
   `,
