@@ -58,4 +58,8 @@ export class HomeComponent implements OnInit {
     this.loadProducts();
   }
 
+  trackByProductId(index: number, product: IProduct) {
+    return product?.id;
+  }
+
 }

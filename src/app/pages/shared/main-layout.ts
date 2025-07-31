@@ -17,7 +17,7 @@ import { AuthService } from '../../services/auth';
 </nav>
  <main class="container mt-4">
      <router-outlet></router-outlet>
-    </main>
+  </main>
   `,
   styles: [`
     nav { background: #333; color: white; padding: 1rem; }
@@ -30,12 +30,7 @@ export class MainLayoutComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  constructor() {
-    if (isPlatformBrowser(inject(PLATFORM_ID))) {
-      console.log('MainLayoutComponent instanciado (cliente)');
-    }
-    console.log('MainLayoutComponent instanciado');
-  }
+
 
   logout() {
     this.authService?.clearToken();
