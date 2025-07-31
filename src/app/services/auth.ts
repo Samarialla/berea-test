@@ -21,7 +21,6 @@ export class AuthService {
   constructor() {
     if (this.isBrowser) {
       const storedToken = localStorage?.getItem('token');
-      console.log('Stored token:', storedToken);
        this._token.set(storedToken ?? '');
     }
   }
@@ -40,7 +39,7 @@ export class AuthService {
   }
 
   clearToken() {
-    //this._token?.set('');
+    this._token?.set('');
     if (this.isBrowser) {
       localStorage?.removeItem('token');
     }

@@ -34,7 +34,7 @@ constructor(
   private router: Router
 ) {
   effect(() => {
-    if (this.auth.isAuthenticated()) {
+    if (this.auth?.isAuthenticated()) {
       this.router.navigate(['/home']);
     }
   });

@@ -52,9 +52,11 @@ export class Home implements OnInit {
   }
 
   onProductCreated() {
-    console.log('Producto creado!');
+      this.loadProducts();
   }
 
-
+  closeModal() {
+    this.loadProducts();
+  }
 
 }

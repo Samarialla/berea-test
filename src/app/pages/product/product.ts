@@ -1,35 +1,52 @@
-import { AfterViewInit, Component, EventEmitter, inject, Output, PLATFORM_ID } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, inject, OnInit, Output, PLATFORM_ID } from '@angular/core';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product';
 import { IProduct } from '../../interface/IProduct';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 import Modal from 'bootstrap/js/dist/modal';
+import { Category } from '../../services/category';
+import { map, Observable, startWith } from 'rxjs';
+import { ICategory } from '../../interface/ICategory';
 
 
 @Component({
   selector: 'app-product',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,],
   templateUrl: './product.html',
   standalone: true,
   styleUrl: './product.scss'
 })
-export class Product implements AfterViewInit {
+export class Product implements OnInit, AfterViewInit {
   @Output() productCreated = new EventEmitter<void>();
+  @Output() closeModal = new EventEmitter<boolean>();
   private platformId = inject(PLATFORM_ID);
 
   private fb = inject(FormBuilder);
+  private categoryService = inject(Category);
   private productService = inject(ProductService);
+  categoryControl = new FormControl('');
+  categories: ICategory[] = [];
+  filteredCategories$!: Observable<ICategory[]>;
 
   productForm = this.fb.group({
     title: ['', Validators.required],
     price: [0, [Validators.required, Validators.min(0.01)]],
     description: ['', Validators.required],
-    categoryId: [null, [Validators.required, Validators.min(1)]],
+    categoryId: [32, [Validators.required, Validators.min(1)]],
     images: ['', Validators.required],
   });
 
   private modalInstance?: Modal;
 
+  ngOnInit(): void {
+    this.getCategories();
+  }
   async ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       const { default: Modal } = await import('bootstrap/js/dist/modal');
@@ -40,12 +57,25 @@ export class Product implements AfterViewInit {
     }
   }
 
+  private _filter(value: string): ICategory[] {
+    const filterValue = value.toLowerCase();
+    return this.categories.filter(cat => cat.name.toLowerCase().includes(filterValue));
+  }
+
+  onCategorySelected(selectedName: string) {
+    const selectedCat = this.categories.find(c => c.name === selectedName) || 0;
+    if (selectedCat) {
+      this.productForm.controls['categoryId'].setValue(selectedCat?.id);
+    }
+  }
+
   open() {
     this.modalInstance?.show();
   }
 
   close() {
     this.modalInstance?.hide();
+    this.closeModal.emit(true);
   }
 
   get title() { return this.productForm.get('title')!; }
@@ -61,11 +91,11 @@ export class Product implements AfterViewInit {
     }
 
     const productData: IProduct = {
-      title: this.title.value || '',
-      price: this.price.value || 0,
-      description: this.description.value || '',
-      categoryId: this.categoryId.value || 0,
-      images: [this.images.value || ''],
+      title: this.productForm.value.title || '',
+      price: this.productForm.value.price || 0,
+      description: this.productForm.value.description || '',
+      categoryId: this.productForm.value.categoryId || 0,
+      images: [this.productForm.value.images || ''],
     };
 
     this.productService.createProduct(productData).subscribe({
@@ -79,6 +109,17 @@ export class Product implements AfterViewInit {
         alert('Error al crear producto');
         console.error(err);
       }
+    });
+  }
+
+  getCategories() {
+    this.categoryService.getCategories().subscribe(cats => {
+      this.categories = cats;
+      //console.log(cats)
+      this.filteredCategories$ = this.categoryControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value|| ''))
+      );
     });
   }
 }

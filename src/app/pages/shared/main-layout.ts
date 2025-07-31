@@ -11,8 +11,8 @@ import { AuthService } from '../../services/auth';
   <nav class="d-flex justify-content-between align-items-center p-3 border-bottom">
   <a routerLink="/home" routerLinkActive="active" class="navbar-brand">Prueba técnica</a>
   
-  <button (click)="logout()" class="btn btn-outline-danger btn-sm" title="Cerrar sesión">
-    <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+  <button (click)="logout()" class="btn btn-outline-info btn-sm" title="Cerrar sesión">
+    <i style="font-size: 12px;" class="material-icons me-2">logout</i>Cerrar sesión
   </button>
 </nav>
  <main class="container mt-4">
@@ -26,19 +26,14 @@ import { AuthService } from '../../services/auth';
     main { padding: 1rem; }
   `]
 })
-export class MainLayoutComponent implements OnInit {
+export class MainLayoutComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
-  ngOnInit() {
-    if (!this.authService?.isAuthenticated()) {
-      this.router.navigate(['/login']);
-    }
-  }
 
   logout() {
     this.authService?.clearToken();
     this.router?.navigate(['/login']);
-    window.location.reload(); //parch solution
+    //window.location.reload(); //parch solution
   }
 
 }
