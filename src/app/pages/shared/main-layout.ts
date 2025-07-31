@@ -10,7 +10,6 @@ import { AuthService } from '../../services/auth';
   template: `
   <nav class="d-flex justify-content-between align-items-center p-3 border-bottom">
   <a routerLink="/home" routerLinkActive="active" class="navbar-brand">Prueba técnica</a>
-  
   <button (click)="logout()" class="btn btn-outline-info btn-sm" title="Cerrar sesión">
     <i style="font-size: 12px;" class="material-icons me-2">logout</i>Cerrar sesión
   </button>

@@ -42,9 +42,7 @@ export class Product implements OnInit, AfterViewInit {
     categoryId: [1, [Validators.required, Validators.min(1)]],
     images: ['', [Validators.required, imageUrlValidator]],
   });
-
   private modalInstance?: Modal;
-
   ngOnInit(): void {
     this.getCategories();
   }
