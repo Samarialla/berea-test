@@ -11,6 +11,7 @@ import Modal from 'bootstrap/js/dist/modal';
 import { Category } from '../../services/category';
 import { map, Observable, startWith } from 'rxjs';
 import { ICategory } from '../../interface/ICategory';
+import { imageUrlValidator } from '../../validators/validatorSystem';
 
 
 @Component({
@@ -38,8 +39,8 @@ export class Product implements OnInit, AfterViewInit {
     title: ['', Validators.required],
     price: [0, [Validators.required, Validators.min(0.01)]],
     description: ['', Validators.required],
-    categoryId: [32, [Validators.required, Validators.min(1)]],
-    images: ['', Validators.required],
+    categoryId: [1, [Validators.required, Validators.min(1)]],
+    images: ['', [Validators.required, imageUrlValidator]],
   });
 
   private modalInstance?: Modal;

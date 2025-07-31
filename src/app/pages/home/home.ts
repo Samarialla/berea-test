@@ -14,7 +14,7 @@ import { Product } from '../product/product';
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
-export class Home implements OnInit {
+export class HomeComponent implements OnInit {
   products$!: Observable<IProduct[]>;
   offset = 0;
   limit = 10;
@@ -47,12 +47,11 @@ export class Home implements OnInit {
   }
 
   openModal() {
-    console.log('open init');
     this.productModal.open();
   }
 
   onProductCreated() {
-      this.loadProducts();
+    this.loadProducts();
   }
 
   closeModal() {

@@ -34,13 +34,19 @@
                <label for="images" class="form-label">URL Imagen</label>
                <input id="images" formControlName="images" type="url" class="form-control"
                   [class.is-invalid]="images.invalid && (images.dirty || images.touched)" />
-               <div *ngIf="images.invalid && (images.dirty || images.touched)" class="invalid-feedback">La URL de la
-                  imagen es obligatoria.</div>
+               <div *ngIf="images.errors?.['required'] && (images.dirty || images.touched)" class="invalid-feedback">
+                  La URL de la imagen es obligatoria.
+               </div>
+               <div *ngIf="images.errors?.['invalidImageUrl'] && (images.dirty || images.touched)"
+                  class="invalid-feedback">
+                  La URL debe apuntar a una imagen válida (.jpg, .png, etc.).
+               </div>
+
             </div>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" (click)="close()">Cerrar</button>
-            <button type="submit" class="btn btn-outline-primary" [disabled]="productForm.invalid">Guardar</button>
+            <button type="submit" class="btn btn-outline-primary" >Guardar</button>
          </div>
       </form>
    </div>

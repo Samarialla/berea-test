@@ -1,5 +1,5 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, effect, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
 
@@ -16,7 +16,7 @@ import { AuthService } from '../../services/auth';
   </button>
 </nav>
  <main class="container mt-4">
-      <router-outlet></router-outlet>
+     <router-outlet></router-outlet>
     </main>
   `,
   styles: [`
@@ -30,10 +30,16 @@ export class MainLayoutComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
+  constructor() {
+    if (isPlatformBrowser(inject(PLATFORM_ID))) {
+      console.log('MainLayoutComponent instanciado (cliente)');
+    }
+    console.log('MainLayoutComponent instanciado');
+  }
+
   logout() {
     this.authService?.clearToken();
-    this.router?.navigate(['/login']);
-    //window.location.reload(); //parch solution
+    this.router?.navigate(['/login'], { replaceUrl: true });
   }
 
 }
