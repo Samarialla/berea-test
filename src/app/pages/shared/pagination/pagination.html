@@ -1,0 +1,14 @@
+<nav aria-label="Page navigation">
+   <ul class="pagination justify-content-start p-1">
+      <li class="page-item p-1" [class.disabled]="offset === 0">
+         <button class="page-link" (click)="prevPage()">Anterior</button>
+      </li>
+      <li class="page-item p-1" [class.disabled]="offset + limit >= total">
+         <button class="page-link" (click)="nextPage()">Siguiente</button>
+      </li>
+      <li class="mt-2 ms-3">
+         Mostrando del {{ offset + 1 }} al
+         {{ offset + currentLength > total ? total : offset + currentLength }}
+      </li>
+   </ul>
+</nav>
