@@ -9,6 +9,9 @@
     "test": "ng test",
     "serve:ssr:storeSystem": "node dist/storeSystem/server/server.mjs"
   },
+  "engines": {
+    "node": "20.19.0"
+  },
   "prettier": {
     "overrides": [
       {
