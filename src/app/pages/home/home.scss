@@ -1,5 +1,5 @@
 .icon-btn {
-  top: 277px;
+  top: 181px;
   right: 10px;
   z-index: 1;
   background-color: white;
@@ -14,8 +14,13 @@
 
 .card-text {
   display: -webkit-box;
-  -webkit-line-clamp: 3; 
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
 }
