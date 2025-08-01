@@ -12,8 +12,8 @@
             </button>
          </div>
 
-         <div class="row row-cols-1 row-cols-md-4 g-4">
-            <div class="col" *ngFor="let product of products; trackBy: trackByProductId">
+         <div class="g-4 product-grid">
+            <div class="product-item" *ngFor="let product of products; trackBy: trackByProductId">
                <div class="card h-100">
                   <div class="position-relative">
                      <img [src]="product.images[0]" class="card-img-top" [alt]="product.title" loading="lazy" />
