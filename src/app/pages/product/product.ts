@@ -40,7 +40,7 @@ export class Product implements OnInit, AfterViewInit {
     title: ['', Validators.required],
     price: [0, [Validators.required, Validators.min(0.01)]],
     description: ['', Validators.required],
-    categoryId: [1, [Validators.required, Validators.min(1)]],
+    categoryId: [36, [Validators.required, Validators.min(1)]],
     images: ['', [Validators.required, imageUrlValidator]],
   });
   private modalInstance?: Modal;
@@ -66,7 +66,7 @@ export class Product implements OnInit, AfterViewInit {
   onCategorySelected(selectedName: string) {
     const selectedCat = this.categories.find(c => c.name === selectedName) || 0;
     if (selectedCat) {
-      this.productForm.controls['categoryId'].setValue(selectedCat?.id);
+      //this.productForm.controls['categoryId'].setValue(selectedCat?.id);
     }
   }
 

@@ -1,4 +1,4 @@
-import { Component, inject} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth';
@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth';
     <i style="font-size: 12px;" class="material-icons me-2">logout</i>Cerrar sesión
   </button>
 </nav>
- <main class="container">
+ <main class="">
      <router-outlet></router-outlet>
   </main>
   `,
@@ -22,7 +22,7 @@ import { AuthService } from '../../services/auth';
     nav { background: #333; color: white; padding: 1rem; }
     nav a { color: white; margin-right: 1rem; text-decoration: none; }
     nav a.active { font-weight: bold; }
-    main { padding: 1rem; }
+    main { padding: 1rem; background: #dee2e7ff; min-height: 100vh; box-sizing: border-box; }
   `]
 })
 export class MainLayoutComponent {
