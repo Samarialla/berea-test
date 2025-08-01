@@ -23,4 +23,13 @@ export class ProductService {
   deleteProduct(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+   getProductById(id: number): Observable<IProduct> {
+    return this.http.get<IProduct>(`${this.apiUrl}/${id}`);
+  }
+
+
+  getRelatedProductsBySlug(slug: string): Observable<IProduct[]> {
+  return this.http.get<IProduct[]>(`${this.apiUrl}/slug/${slug}/related`);
+}
 }
