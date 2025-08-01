@@ -16,7 +16,8 @@
             <div class="product-item" *ngFor="let product of products; trackBy: trackByProductId">
                <div class="card h-100">
                   <div class="position-relative">
-                     <img [src]="product.images[0]" class="card-img-top" [alt]="product.title" loading="lazy" />
+                     <a [routerLink]="['/products', product.id]"> <img [src]="product.images[0]" class="card-img-top"
+                           [alt]="product.title" loading="lazy" /></a>
                      <button class="btn btn-sm position-absolute icon-btn delete-btn"
                         (click)="deleteProduct(product.id || 0)">
                         <i class="material-icons delete-icon">delete</i>

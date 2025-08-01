@@ -8,11 +8,12 @@ import { Pagination } from '../shared/pagination/pagination';
 import { Product } from '../product/product';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteProduct } from '../delete-product/delete-product';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NgForOf, AsyncPipe, Spinner, Pagination, Product],
+  imports: [CommonModule, NgForOf, AsyncPipe, Spinner, Pagination, Product, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
