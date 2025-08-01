@@ -1,15 +1,16 @@
-import { Component, inject, computed, signal } from '@angular/core';
+import { Component, inject, computed, signal, effect } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { CommonModule, NgFor } from '@angular/common';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ProductService } from '../../services/product';
 import { IProduct } from '../../interface/IProduct';
 import { Spinner } from '../shared/spinner/spinner';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-detail-product',
   standalone: true,
-  imports: [CommonModule, Spinner, RouterLink],
+  imports: [CommonModule, Spinner, RouterLink, NgFor],
   templateUrl: './detail-product.html',
   styleUrls: ['./detail-product.scss']
 })
@@ -18,18 +19,38 @@ export class DetailProduct {
   private productService = inject(ProductService);
   private currentIndex = signal(0);
 
-  readonly productId = computed(() => {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    return idParam ? Number(idParam) : 0;
-  });
+  readonly productId = toSignal(
+    this.route.paramMap.pipe(
+      switchMap((params) => {
+        const id = params.get('id');
+        return [id ? +id : 0];
+      })
+    ),
+    { initialValue: 0 }
+  );
 
-  readonly product = toSignal<IProduct | undefined>(this.productService.getProductById(this.productId()));
-  readonly relatedProducts = toSignal(this.productService.getRelatedProducts(this.productId()));
+  readonly product = toSignal(
+    toObservable(this.productId).pipe(
+      switchMap((id) => this.productService.getProductById(id))
+    ),
+    { initialValue: undefined }
+  );
 
   readonly selectedImage = computed(() => {
     const images = this.product()?.images || [];
     return images.length ? images[this.currentIndex()] : '';
   });
+
+  readonly relatedProducts = toSignal(
+    toObservable(this.product).pipe(
+      switchMap((product) =>
+        product?.slug
+          ? this.productService.getRelatedProductsBySlug(product.slug)
+          : []
+      )
+    ),
+    { initialValue: [] }
+  );
 
   prevImage() {
     const images = this.product()?.images || [];
