@@ -1,57 +1,54 @@
 <div class="container">
-   <h1 class="mb-4">Lista de Productos</h1>
+  <h1 class="mb-4">Lista de Productos</h1>
 
-   <ng-container *ngIf="products$ | async as products; else loading">
-      <ng-container *ngIf="products.length > 0; else noProducts">
-         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 mb-3">
-            <app-pagination [offset]="offset" [limit]="limit" [total]="totalProducts" [currentLength]="products.length"
-               (pageChange)="onPageChange($event)">
-            </app-pagination>
-            <button type="button" (click)="openModal()" class="btn btn-outline-primary mt-2 mt-sm-0">
-               Añadir Productos
-            </button>
-         </div>
+  <ng-container *ngIf="loading; else showProducts">
+    <app-spinner></app-spinner>
+  </ng-container>
 
-         <div class="g-4 product-grid">
-            <div class="product-item" *ngFor="let product of products; trackBy: trackByProductId">
-               <div class="card h-100">
-                  <div class="position-relative">
-                     <a [routerLink]="['/products', product.id]"> <img [src]="product.images[0]" class="card-img-top"
-                           [alt]="product.title" loading="lazy" /></a>
-                     <button class="btn btn-sm position-absolute icon-btn delete-btn"
-                        (click)="deleteProduct(product.id || 0)">
-                        <i class="material-icons delete-icon">delete</i>
-                     </button>
-                  </div>
-                  <div class="card-body">
-                     <h5 class="card-title">{{ product.title }}</h5>
-                     <p class="card-text">{{ product.description }}</p>
-                     <div class="d-flex justify-content-between align-items-center">
-                        <small class="badge rounded-pill bg-success">{{ product.category?.name }}</small>
-                        <h2>{{ product.price }} $</h2>
-                     </div>
-                  </div>
-               </div>
+  <ng-template #showProducts>
+    <ng-container *ngIf="products.length > 0; else noProducts">
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 mb-3">
+        <app-pagination
+          [offset]="offset()"
+          [limit]="limit()"
+          [total]="totalProducts"
+          [currentLength]="products.length"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
+
+        <button type="button" (click)="openModal()" class="btn btn-outline-primary mt-2 mt-sm-0">
+          Añadir Productos
+        </button>
+      </div>
+
+      <div class="g-4 product-grid">
+        <div class="product-item" *ngFor="let product of products; trackBy: trackByProductId">
+          <div class="card h-100">
+            <div class="position-relative">
+              <a [routerLink]="['/products', product.id]">
+                <img [src]="product.images[0]" class="card-img-top" [alt]="product.title" loading="lazy" />
+              </a>
+              <button class="btn btn-sm position-absolute icon-btn delete-btn" (click)="deleteProduct(product.id || 0)">
+                <i class="material-icons delete-icon">delete</i>
+              </button>
             </div>
-         </div>
-      </ng-container>
-   </ng-container>
+            <div class="card-body">
+              <h5 class="card-title">{{ product.title }}</h5>
+              <p class="card-text">{{ product.description }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="badge rounded-pill bg-success">{{ product.category?.name }}</small>
+                <h2>{{ product.price }} $</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-template>
 
-
-   <ng-template #noProducts>
-      <p>No hay productos disponibles.</p>
-   </ng-template>
-
-
-   <ng-template #loading>
-      <app-spinner></app-spinner>
-   </ng-template>
-
-   <ng-template #noProducts>
-      <p>No hay productos para mostrar.</p>
-   </ng-template>
-
-
+  <ng-template #noProducts>
+    <p>No hay productos disponibles.</p>
+  </ng-template>
 
 </div>
 

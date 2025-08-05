@@ -1,7 +1,6 @@
-import { AsyncPipe, CommonModule, NgForOf } from '@angular/common';
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { CommonModule, NgForOf } from '@angular/common';
+import { Component, inject, ViewChild, signal } from '@angular/core';
 import { ProductService } from '../../services/product';
-import { Observable } from 'rxjs';
 import { IProduct } from '../../interface/IProduct';
 import { Spinner } from "../shared/spinner/spinner";
 import { Pagination } from '../shared/pagination/pagination';
@@ -9,56 +8,67 @@ import { Product } from '../product/product';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteProduct } from '../delete-product/delete-product';
 import { RouterLink } from '@angular/router';
+import { httpResource } from '@angular/common/http';
+import { IStatus } from '../../interface/IStatus';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NgForOf, AsyncPipe, Spinner, Pagination, Product, RouterLink],
+  imports: [CommonModule, NgForOf, Spinner, Pagination, Product, RouterLink],
   templateUrl: './home.html',
-  styleUrl: './home.scss'
+  styleUrls: ['./home.scss']
 })
-export class HomeComponent implements OnInit {
-  products$!: Observable<IProduct[]>;
-  offset = 0;
-  limit = 10;
-  loading = false;
-  totalProducts = 50
+export class HomeComponent {
+  offset = signal(0);
+  limit = signal(10);
+  totalProducts = 50;
+  refresh = signal(0);
+
+  productsResource = httpResource<IProduct[]>(() => ({
+    method: 'GET',
+    url: `${environment.apiUrl}/products`,
+    params: {
+      offset: this.offset(),
+      limit: this.limit(),
+      refresh: this.refresh()
+    }
+  }));
+
+  get loading() {
+    return this.productsResource.status() === IStatus.LOADING;
+  }
+
+  get reloading() {
+    return this.productsResource.status() === IStatus.REL;
+  }
+
+  get error() {
+    return this.productsResource.status() === IStatus.ERROR ? this.productsResource.error() : null;
+  }
+
+  get products() {
+    return this.productsResource.value() ?? [];
+  }
+
   @ViewChild('productModalRef') productModal!: Product;
-    private modalService = inject(NgbModal);
-
-
-
-  constructor(private productService: ProductService) {
-  }
-  ngOnInit(): void {
-    this.loadProducts();
-  }
-
-  loadProducts() {
-    this.loading = true;
-    this.products$ = this.productService.getProducts(this.offset, this.limit);
-    this.products$.subscribe({
-      next: () => this.loading = false,
-      error: () => this.loading = false
-    });
-  }
-
-  onPageChange(newOffset: number) {
-    this.offset = newOffset;
-    this.loadProducts();
-  }
-
+  private modalService = inject(NgbModal);
+  private productService = inject(ProductService);
 
   openModal() {
     this.productModal.open();
   }
 
   onProductCreated() {
-    this.loadProducts();
+    this.offset.set(this.offset());
   }
 
   closeModal() {
-    this.loadProducts();
+    this.offset.set(this.offset());
+  }
+
+  onPageChange(newOffset: number) {
+    this.offset.set(newOffset);
   }
 
   trackByProductId(index: number, product: IProduct) {
@@ -69,23 +79,18 @@ export class HomeComponent implements OnInit {
     if (id) {
       this.productService.deleteProduct(id).subscribe({
         next: () => {
-           const modalRef = this.modalService.open(DeleteProduct);
-        modalRef.result.then((result) => {
-          if (result === true) {
-            this.loadProducts();
-          }
-        }).catch(() => {
-        });
+          const modalRef = this.modalService.open(DeleteProduct);
+          modalRef.result.then((result) => {
+            if (result) {
+              this.refresh.update(v => v + 1);
+            }
+          }).catch(() => { });
         },
         error: (err) => {
           alert('Error al eliminar producto');
           console.error(err);
-        },
-        
-      }
-      )
+        }
+      });
     }
   }
-
-
 }

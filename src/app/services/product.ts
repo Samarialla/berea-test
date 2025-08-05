@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from '../interface/IProduct';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { IProduct } from '../interface/IProduct';
 export class ProductService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'https://api.escuelajs.co/api/v1/products';
+  private apiUrl = `${environment.apiUrl}/products`;
 
   getProducts(offset = 0, limit = 10): Observable<IProduct[]> {
     const url = `${this.apiUrl}?offset=${offset}&limit=${limit}`;
@@ -17,19 +18,19 @@ export class ProductService {
   }
 
   createProduct(product: IProduct) {
-    return this.http.post('https://api.escuelajs.co/api/v1/products/', product);
+    return this.http.post(this.apiUrl, product);
   }
 
   deleteProduct(id: number) {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-   getProductById(id: number): Observable<IProduct> {
+  getProductById(id: number): Observable<IProduct> {
     return this.http.get<IProduct>(`${this.apiUrl}/${id}`);
   }
 
 
   getRelatedProductsBySlug(slug: string): Observable<IProduct[]> {
-  return this.http.get<IProduct[]>(`${this.apiUrl}/slug/${slug}/related`);
-}
+    return this.http.get<IProduct[]>(`${this.apiUrl}/slug/${slug}/related`);
+  }
 }
