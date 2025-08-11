@@ -1,4 +1,4 @@
-import { CommonModule, NgForOf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, ViewChild, signal } from '@angular/core';
 import { ProductService } from '../../services/product';
 import { IProduct } from '../../interface/IProduct';
@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, NgForOf, Spinner, Pagination, Product, RouterLink],
+  imports: [CommonModule, Spinner, Pagination, Product, RouterLink],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
