@@ -3,14 +3,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule, NgFor } from '@angular/common';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ProductService } from '../../services/product';
-import { IProduct } from '../../interface/IProduct';
 import { Spinner } from '../shared/spinner/spinner';
-import { map, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-detail-product',
   standalone: true,
-  imports: [CommonModule, Spinner, RouterLink, NgFor],
+  imports: [CommonModule, Spinner, RouterLink],
   templateUrl: './detail-product.html',
   styleUrls: ['./detail-product.scss']
 })

@@ -14,15 +14,15 @@
           (pageChange)="onPageChange($event)">
         </app-pagination>
 
-        <button type="button" (click)="openModal()" class="btn btn-outline-primary mt-2 mt-sm-0">
-          Añadir Productos
+        <button type="button" (click)="openModal()" class="btn btn-outline-primary">
+           <i style="font-size: 14px;" class="material-icons">add</i> Añadir Productos
         </button>
       </div>
 
       <div class="g-4 product-grid">
         @for (product of products; track product.id) {
           <div class="product-item">
-            <div class="card h-100">
+            <div class="card h-100 shadow-lg bg-body rounded">
               <div class="position-relative">
                 <a [routerLink]="['/products', product.id]">
                   <img [src]="product.images[0]" class="card-img-top" [alt]="product.title" loading="lazy" />

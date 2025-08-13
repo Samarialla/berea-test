@@ -6,14 +6,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
 import Modal from 'bootstrap/js/dist/modal';
 import { Category } from '../../services/category';
 import { map, Observable, startWith } from 'rxjs';
 import { ICategory } from '../../interface/ICategory';
 import { imageUrlValidator } from '../../validators/validatorSystem';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DeleteProduct } from '../delete-product/delete-product';
+
 
 
 @Component({
@@ -77,6 +75,7 @@ export class Product implements OnInit, AfterViewInit {
   close() {
     this.modalInstance?.hide();
     this.closeModal.emit(true);
+    this.productForm.reset();
   }
 
   get title() { return this.productForm.get('title')!; }

@@ -10,42 +10,49 @@
                <label for="title" class="form-label">Título</label>
                <input id="title" formControlName="title" type="text" class="form-control"
                   [class.is-invalid]="title.invalid && (title.dirty || title.touched)" />
-               <div *ngIf="title.invalid && (title.dirty || title.touched)" class="invalid-feedback">El título es
-                  obligatorio.</div>
-            </div>
 
+               @if (title.invalid && (title.dirty || title.touched)) {
+               <div class="invalid-feedback">El título es obligatorio.</div>
+               }
+            </div>
             <div class="mb-3">
                <label for="price" class="form-label">Precio</label>
                <input id="price" formControlName="price" type="number" class="form-control"
                   [class.is-invalid]="price.invalid && (price.dirty || price.touched)" />
-               <div *ngIf="price.invalid && (price.dirty || price.touched)" class="invalid-feedback">El precio es
-                  obligatorio y debe ser positivo.</div>
-            </div>
 
+               @if (price.invalid && (price.dirty || price.touched)) {
+               <div class="invalid-feedback">El precio es obligatorio y debe ser positivo.</div>
+               }
+            </div>
             <div class="mb-3">
                <label for="description" class="form-label">Descripción</label>
                <textarea id="description" formControlName="description" class="form-control" rows="3"
                   [class.is-invalid]="description.invalid && (description.dirty || description.touched)"></textarea>
-               <div *ngIf="description.invalid && (description.dirty || description.touched)" class="invalid-feedback">
-                  La descripción es obligatoria.</div>
-            </div>
 
+               @if (description.invalid && (description.dirty || description.touched)) {
+               <div class="invalid-feedback">La descripción es obligatoria.</div>
+               }
+            </div>
             <div class="mb-3">
                <label for="images" class="form-label">URL Imagen</label>
                <input id="images" formControlName="images" type="url" class="form-control"
                   [class.is-invalid]="images.invalid && (images.dirty || images.touched)" />
-               <div *ngIf="images.errors?.['required'] && (images.dirty || images.touched)" class="invalid-feedback">
-                  La URL de la imagen es obligatoria.
-               </div>
-               <div *ngIf="images.errors?.['invalidImageUrl'] && (images.dirty || images.touched)"
-                  class="invalid-feedback">
-                  La URL debe apuntar a una imagen válida (.jpg, .png, etc.).
-               </div>
+
+               @if (images.errors?.['required'] && (images.dirty || images.touched)) {
+               <div class="invalid-feedback">La URL de la imagen es obligatoria.</div>
+               }
+               @if (images.errors?.['invalidImageUrl'] && (images.dirty || images.touched)) {
+               <div class="invalid-feedback">La URL debe apuntar a una imagen válida (.jpg, .png, etc.).</div>
+               }
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" (click)="close()">Cerrar</button>
-            <button type="submit" class="btn btn-outline-primary" >Guardar</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="close()">
+               <i style="font-size: 14px;" class="material-icons">close</i> Cerrar
+            </button>
+            <button type="submit" class="btn btn-outline-primary">
+               <i style="font-size: 14px;" class="material-icons">save</i> Guardar
+            </button>
          </div>
       </form>
    </div>

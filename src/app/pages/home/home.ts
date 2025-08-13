@@ -22,7 +22,7 @@ import { environment } from '../../../environments/environment';
 export class HomeComponent {
   offset = signal(0);
   limit = signal(10);
-  totalProducts = 50;
+  totalProducts = 40;
   refresh = signal(0);
 
   productsResource = httpResource<IProduct[]>(() => ({
@@ -71,9 +71,6 @@ export class HomeComponent {
     this.offset.set(newOffset);
   }
 
-  trackByProductId(index: number, product: IProduct) {
-    return product?.id;
-  }
 
   deleteProduct(id: number) {
     if (id) {
